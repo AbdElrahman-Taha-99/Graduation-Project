@@ -147,7 +147,7 @@ def run(
                 annotator.text((32, 32), text, txt_color=(255, 255, 255))
             if save_txt:  # Write to file
                 with open(f'{txt_path}.txt', 'a') as f:
-                    f.write(text + '\n' + 'We love dr Noha')
+                    f.write(text + '\n')
 
             # Stream results
             im0 = annotator.result()
