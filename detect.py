@@ -215,6 +215,8 @@ def run(
         print(pred)
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
+    
+    return pred 
 
 
 def parse_opt():
