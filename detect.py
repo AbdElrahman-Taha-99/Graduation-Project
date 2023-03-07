@@ -241,7 +241,7 @@ def run(
             focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
             distance_array[k] = distance_finder(focal_car, CAR_WIDTH, width_in_frame)
             k = k + 1          
-     print(min(distance_array))
+    print(min(distance_array))
 
 def parse_opt():
     parser = argparse.ArgumentParser()
