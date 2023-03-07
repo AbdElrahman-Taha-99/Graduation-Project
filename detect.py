@@ -35,6 +35,7 @@ import sys
 from pathlib import Path
 
 import torch
+import cv2 as cv 
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
@@ -48,8 +49,21 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
                            increment_path, non_max_suppression, print_args, scale_boxes, strip_optimizer, xyxy2xywh)
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
+##################################################################################################################
+KNOWN_DISTANCE = 3.7 #METERS
+CAR_WIDTH = 1.826 #METERS
+car_width_in_rf = 520
 
+def focal_length_finder (measured_distance, real_width, width_in_rf):
+    focal_length = (width_in_rf * measured_distance) / real_width
 
+    return focal_length
+
+# distance finder function 
+def distance_finder(focal_length, real_object_width, width_in_frmae):
+    distance = (real_object_width * focal_length) / width_in_frmae
+    return distance
+######################################################################################################################
 @smart_inference_mode()
 def run(
         weights=ROOT / 'yolov5s.pt',  # model path or triton URL
@@ -212,12 +226,22 @@ def run(
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
         LOGGER.info(f"Results saved to {colorstr('bold', save_dir)}{s}")
-        print(pred)
+        #print(pred)
     if update:
-        strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning)
+        strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning) 
     
-    return pred 
-
+    # Get the distance
+    i = 0
+    k = 0    
+    distance_array = []
+    
+    for numOfObjects in range(len(pred[0])):
+        if (640 - pred[0][i][2]) in range(pred[0][i][0] - 50, pred[0][i][0] + 50):
+            width_in_frame = pred[0][i][2] - pred[0][i][0]
+            focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
+            distance_array[k] = distance_finder(focal_car, CAR_WIDTH, width_in_frame)
+            k = k + 1          
+     print(min(distance_array))
 
 def parse_opt():
     parser = argparse.ArgumentParser()
