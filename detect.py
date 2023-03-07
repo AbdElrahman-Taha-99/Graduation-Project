@@ -36,6 +36,7 @@ from pathlib import Path
 
 import torch
 import cv2 as cv 
+import numpy as np
 
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # YOLOv5 root directory
