@@ -230,19 +230,18 @@ def run(
     if update:
         strip_optimizer(weights[0])  # update model (to fix SourceChangeWarning) 
     
-    # Get the distance
-    i = 0
-    k = 0    
+        # Get the distance
+    i = 0  
     distance_array = []
-    
-    for numOfObjects in range(len(pred[0])):
-        if (640 - pred[0][i][2]) in range(pred[0][i][0] - 50, pred[0][i][0] + 50):
+    for i in range(len(pred[0])-1):
+        if (640 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - 50, int(pred[0][i][0]) + 50):
             width_in_frame = pred[0][i][2] - pred[0][i][0]
             focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
-            distance_array[k] = distance_finder(focal_car, CAR_WIDTH, width_in_frame)
-            k = k + 1          
-    print(min(distance_array))
-
+            distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame))         
+    
+    min_distance = min(distance_array) 
+    print(min_distance)
+    
 def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default=ROOT / 'yolov5s.pt', help='model path or triton URL')
