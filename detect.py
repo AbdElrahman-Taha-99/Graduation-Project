@@ -234,7 +234,7 @@ def run(
         # Get the distance
     i = 0  
     distance_array = []
-    for i in range(len(pred[0])-1):
+    for i in range(len(pred[0])):
         object_width = int(pred[0][i][2]) - int(pred[0][i][0])
         if (640 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
             width_in_frame = pred[0][i][2] - pred[0][i][0]
