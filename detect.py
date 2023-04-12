@@ -51,7 +51,7 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 ##################################################################################################################
-KNOWN_DISTANCE = 3.7 #METERS
+KNOWN_DISTANCE = 10.48 #METERS
 CAR_WIDTH = 1.826 #METERS
 car_width_in_rf = 520
 
