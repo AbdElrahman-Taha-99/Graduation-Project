@@ -53,7 +53,7 @@ from utils.torch_utils import select_device, smart_inference_mode
 ##################################################################################################################
 KNOWN_DISTANCE = 10.48 #METERS
 CAR_WIDTH = 1.826 #METERS
-car_width_in_rf = 520
+car_width_in_rf = 45
 
 def focal_length_finder (measured_distance, real_width, width_in_rf):
     focal_length = (width_in_rf * measured_distance) / real_width
@@ -235,7 +235,8 @@ def run(
     i = 0  
     distance_array = []
     for i in range(len(pred[0])-1):
-        if (640 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - 50, int(pred[0][i][0]) + 50):
+        object_width = int(pred[0][i][2]) - int(pred[0][i][0])
+        if (640 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
             width_in_frame = pred[0][i][2] - pred[0][i][0]
             focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
             distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame))         
