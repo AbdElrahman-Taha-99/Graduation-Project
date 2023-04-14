@@ -236,10 +236,11 @@ def run(
     distance_array = []
     for i in range(len(pred[0])):
         object_width = int(pred[0][i][2]) - int(pred[0][i][0])
-        if (640 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
-            width_in_frame = pred[0][i][2] - pred[0][i][0]
-            focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
-            distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame))         
+        if (int(pred[0][i][5]) == 9):
+            if (800 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
+                width_in_frame = pred[0][i][2] - pred[0][i][0]
+                focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
+                distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame))         
     
     min_distance = min(distance_array) 
     print(min_distance)
