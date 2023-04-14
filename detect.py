@@ -51,9 +51,13 @@ from utils.general import (LOGGER, Profile, check_file, check_img_size, check_im
 from utils.plots import Annotator, colors, save_one_box
 from utils.torch_utils import select_device, smart_inference_mode
 ##################################################################################################################
-KNOWN_DISTANCE = 10.48 #METERS
-CAR_WIDTH = 1.826 #METERS
+KNOWN_DISTANCE = 10.48 #METERS #Car
+CAR_WIDTH = 1.826 #METERS 
 car_width_in_rf = 45
+
+KNOWN_DISTANCE_MOTORBIKE = 2 #METERS
+MOTORBIKE_WIDTH = 0.8382 #METERS
+motorbike_width_in_rf = 49 #PIXELS
 
 def focal_length_finder (measured_distance, real_width, width_in_rf):
     focal_length = (width_in_rf * measured_distance) / real_width
@@ -240,7 +244,13 @@ def run(
             if (800 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
                 width_in_frame = pred[0][i][2] - pred[0][i][0]
                 focal_car = focal_length_finder(KNOWN_DISTANCE, CAR_WIDTH, car_width_in_rf)
-                distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame))         
+                distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame)) 
+        
+        elif (int(pred[0][i][5]) == 0 or int(pred[0][i][5]) == 1):
+            if (800 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
+                width_in_frame = pred[0][i][2] - pred[0][i][0]
+                focal_motorbike = focal_length_finder(KNOWN_DISTANCE_MOTORBIKE, MOTORBIKE_WIDTH, motorbike_width_in_rf)
+                distance_array.append(distance_finder(focal_motorbike, MOTORBIKE_WIDTH, width_in_frame)) 
     
     min_distance = min(distance_array) 
     print(min_distance)
