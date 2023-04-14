@@ -247,7 +247,7 @@ def run(
                 distance_array.append(distance_finder(focal_car, CAR_WIDTH, width_in_frame)) 
         
         elif (int(pred[0][i][5]) == 0 or int(pred[0][i][5]) == 1):
-            if (800 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - object_width, int(pred[0][i][0]) + object_width):
+            if (800 - int(pred[0][i][2])) in range(int(pred[0][i][0]) - 3 * object_width, int(pred[0][i][0]) + 3 * object_width):
                 width_in_frame = pred[0][i][2] - pred[0][i][0]
                 focal_motorbike = focal_length_finder(KNOWN_DISTANCE_MOTORBIKE, MOTORBIKE_WIDTH, motorbike_width_in_rf)
                 distance_array.append(distance_finder(focal_motorbike, MOTORBIKE_WIDTH, width_in_frame)) 
